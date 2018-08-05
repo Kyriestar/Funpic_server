@@ -27,20 +27,15 @@ app.use('/getImages', (req, res) => {
 });
 
 app.use('/listimg', (req, res) => {
-	let myDate = new Date();
-	let y = myDate.getFullYear();
-	let m = myDate.getMonth() + 1;
-	let d = myDate.getDate();
-	let path = '/home/ubuntu/Funpic_server/images/image' + y + m + d;
-	let pf = 'http://140.143.166.218:8888/images/image' + y + m + d;
-	finder(path, (err, files) => {
+
+	finder((err, files) => {
 		if (err) {
 			res.end(JSON.stringify(err));
 			return;
 		}
 		var out = {
 			error: null,
-			urls: pf + files
+			urls: files
 		};
 		res.writeHead(200, {
 			"Content-Type": "application/json"
@@ -50,16 +45,22 @@ app.use('/listimg', (req, res) => {
 });
 
 
-function finder(path, callback) {
+function finder(callback) {
+	var myDate = new Date();
+	var y = myDate.getFullYear();
+	var m = myDate.getMonth() + 1;
+	var d = myDate.getDate();
+	var path = '/home/ubuntu/Funpic_server/images/image' + y + m + d;
 
 	fs.readdir(path, function(err, files) {
+		let url = 'http://140.143.166.218:8888/images/image' + y + m + d + '/' + files;
 		//err 为错误 , files 文件名列表包含文件夹与文件
 		if (err) {
 			callback(err);
 			console.log('error:\n' + err);
 		}
-		callback(null, files);
-		console.log(files);
+		callback(null, url);
+		console.log(url);
 	});
 
 }
