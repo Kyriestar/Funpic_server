@@ -27,15 +27,26 @@ app.use('/getImages', (req, res) => {
 });
 
 app.use('/listimg', (req, res) => {
+	var myDate = new Date();
+	var y = myDate.getFullYear();
+	var m = myDate.getMonth() + 1;
+	var d = myDate.getDate();
+	var path = '/home/ubuntu/Funpic_server/images/image' + y + m + d;
+	// var path = '/Users/cchenlll/Desktop/node-pachong/images/image' + y + m + d;
+	let pfurl = 'http://140.143.166.218:8888/images/image' + y + m + d + '/';
 
-	finder((err, files) => {
+	finder(path, (err, files) => {
 		if (err) {
 			res.end(JSON.stringify(err));
 			return;
 		}
+		let urls = [];
+		files.forEach((file) => {
+			urls.push(pfurl + file);
+		})
 		var out = {
 			error: null,
-			urls: files
+			urls: urls
 		};
 		res.writeHead(200, {
 			"Content-Type": "application/json"
@@ -45,22 +56,15 @@ app.use('/listimg', (req, res) => {
 });
 
 
-function finder(callback) {
-	var myDate = new Date();
-	var y = myDate.getFullYear();
-	var m = myDate.getMonth() + 1;
-	var d = myDate.getDate();
-	var path = '/home/ubuntu/Funpic_server/images/image' + y + m + d;
-
+function finder(path, callback) {
 	fs.readdir(path, function(err, files) {
-		let url = 'http://140.143.166.218:8888/images/image' + y + m + d + '/' + files;
 		//err 为错误 , files 文件名列表包含文件夹与文件
 		if (err) {
 			callback(err);
 			console.log('error:\n' + err);
 		}
-		callback(null, url);
-		console.log(url);
+		callback(null, files);
+		console.log(files);
 	});
 
 }
