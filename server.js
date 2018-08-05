@@ -31,7 +31,7 @@ app.use('/listimg', (req, res) => {
 	let y = myDate.getFullYear();
 	let m = myDate.getMonth() + 1;
 	let d = myDate.getDate();
-	let path = '/root/Funpic_server/images/image' + y + m + d;
+	let path = '/home/ubuntu/Funpic_server/images/image' + y + m + d;
 	let pf = 'http://140.143.166.218:8888/images/image' + y + m + d;
 	finder(path, (err, files) => {
 		if (err) {
