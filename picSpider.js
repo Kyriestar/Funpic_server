@@ -5,7 +5,7 @@ var mkdirp = require('mkdirp');
 var request = require("request");
 
 var _url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value=';
-var _weiboId = ['5824051112']; //2654037900 5824051112
+var _weiboId = ['2654037900', '5824051112', '6147237175']; //2654037900(表情包原图哥) 5824051112(原图妈) 6147237175(表情包了解一下)
 var _containerid;
 var _pageUrl = '&page=';
 var _pageNum;
@@ -59,7 +59,7 @@ function getData(url, id, conid) {
 		method: 'GET',
 		url: url + id + '&containerid=' + conid,
 		timeout: 8000,
-		encoding: null,
+		encoding: 'UTF-8',
 	}
 	// opt.proxy = 'http://' + '121.42.167.160:3128';
 	request(opt, function(error, response, body) {
@@ -88,9 +88,10 @@ function getPicUrl(dataObj) {
 	for (i in cardsArr) {
 		if (cardsArr[i].mblog) {
 			var mblog = cardsArr[i].mblog;
+			var createTime = mblog.created_at; // sample : 08-03
 			var like = mblog.attitudes_count; //点赞的数量
 			var text = mblog.text; //微博文字
-			if (text.indexOf("奖") > 0 || text.indexOf("抽一位") > 0 || text.indexOf("精选") < 0) {
+			if (text.indexOf("奖") > 0 || text.indexOf("抽一位") > 0 || createTime.indexOf("小时前") < 0) {
 				continue;
 			}
 			if (mblog.pics) {
