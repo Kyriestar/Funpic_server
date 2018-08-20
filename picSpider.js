@@ -142,7 +142,7 @@ function setFilename() {
 	var myDate = new Date();
 	var m = myDate.getMonth() + 1;
 	var d = myDate.getDate();
-	var filename = m.toString() + d.toString() + '_' + parseInt(Math.random() * 1000) + '.jpg';
+	var filename = m.toString() + d.toString() + '_' + parseInt(Math.random() * 1000) + '.png';
 	return filename;
 }
 

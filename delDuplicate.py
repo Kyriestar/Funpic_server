@@ -1,18 +1,28 @@
 import  os
 import time
 from PIL import Image
+
+#compose date
 y=time.strftime("%Y")
 m=time.strftime("%m")
 d=time.strftime("%d")
 
-path = "./images/image"+y+m.replace('0','')+d.replace('0','')
+if m[0] == '0' :
+    m=m.replace('0','')
+
+if d[0] == '0':
+    d=d.replace('0','')
+
+
+path = "./images/image"+y+m+d
 files = []
+
 def getImages(path):
     global files
     files = os.listdir(path)
     images = []
     for file in files:
-        if not os.path.isdir(file) and 'jpg' in file:
+        if not os.path.isdir(file) and 'png' in file:
             print(path + "/" + file)
             image = Image.open(path + "/" + file)
             images.append(image)
@@ -45,6 +55,7 @@ def compCode(code1, code2):
     return num
 
 if __name__ == '__main__':
+    __all__=['Image']
     size = (9, 8)
     images = getImages(path)
     imageCodes=[]
